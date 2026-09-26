@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<title>いまコト</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="今、話題の言葉を、意味・流行の理由・使い方の例つきでやさしく解説するアプリ。">
+<meta name="theme-color" content="#3565F2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="いまコト">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap">
+<style>
+html{-webkit-text-size-adjust:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --ground:#E9EFFD; --ground2:#F4EEFF;
+  --surface:#FFFFFF; --surface2:#F3F6FE; --line:#E1E7F5;
+  --ink:#1B2240; --muted:#67708C; --faint:#98A0B8;
+  --primary:#3565F2; --violet:#7B5CF2; --onprimary:#FFFFFF;
+  --hot:#F0457E; --hot-bg:#FFE9F0; --good:#1FAE78; --good-bg:#E3F7EE;
+  --trend-bg:#E8F0FF; --rise-bg:#FFEEF1;
+  --g-sns:#3B7CF6; --g-game:#1FAE78; --g-music:#E04FA8; --g-gourmet:#F08A1C; --g-news:#0C9FC2; --g-ent:#9A57EE; --g-other:#6B7A99;
+  --shadow:0 18px 50px -20px rgba(40,60,140,.35);
+  --font:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#0F1428; --ground2:#18132C;
+    --surface:#1A2038; --surface2:#222A47; --line:#2E3758;
+    --ink:#EEF1FB; --muted:#A5AECB; --faint:#7A84A4;
+    --primary:#6F92FF; --violet:#A08BFF; --onprimary:#0E1430;
+    --hot:#FF6B9A; --hot-bg:#3A1F2E; --good:#3FD39A; --good-bg:#16372C;
+    --trend-bg:#1F2B4F; --rise-bg:#3A2130;
+    --shadow:0 18px 50px -20px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0F1428; --ground2:#18132C;
+  --surface:#1A2038; --surface2:#222A47; --line:#2E3758;
+  --ink:#EEF1FB; --muted:#A5AECB; --faint:#7A84A4;
+  --primary:#6F92FF; --violet:#A08BFF; --onprimary:#0E1430;
+  --hot:#FF6B9A; --hot-bg:#3A1F2E; --good:#3FD39A; --good-bg:#16372C;
+  --trend-bg:#1F2B4F; --rise-bg:#3A2130;
+  --shadow:0 18px 50px -20px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:var(--font);color:var(--ink);background:linear-gradient(135deg,var(--ground),var(--ground2));font-size:14px;line-height:1.6}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:8px}
+svg{display:block}
+
+.stage{min-height:100%;display:flex;justify-content:center;align-items:center;gap:56px;padding-block:32px;padding-inline:24px}
+.intro{max-width:340px;display:flex;flex-direction:column;gap:22px}
+.logo-big{font-size:64px;font-weight:800;line-height:1;letter-spacing:.02em;background:linear-gradient(100deg,var(--primary),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;margin:0}
+.intro h2{margin:0;font-size:24px;line-height:1.5;text-wrap:balance}
+.intro p{margin:0;color:var(--muted);line-height:1.9}
+.points{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.points li{display:flex;gap:12px;align-items:center;background:var(--surface);border-radius:16px;padding:10px 14px}
+.points .pi{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff}
+.points b{display:block;font-size:13px}
+.points span{font-size:12px;color:var(--muted)}
+
+.device{position:relative;width:390px;height:min(820px,calc(100vh - 64px));background:var(--surface);border-radius:44px;border:8px solid #1B2240;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+.screen{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 16px 24px;display:flex;flex-direction:column;gap:18px;scroll-behavior:smooth}
+@media (max-width:900px){ .intro{display:none} .stage{padding:0} }
+@media (max-width:520px){
+  .device{width:100%;border:0;border-radius:0;box-shadow:none;height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+  .stage{display:block}
+}
+
+/* bottom nav */
+.nav{flex:none;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);background:var(--surface);padding:6px 4px calc(8px + env(safe-area-inset-bottom,0px))}
+.nav button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--faint);padding:4px 0;border-radius:12px}
+.nav button[aria-current="page"]{color:var(--primary);font-weight:700}
+.nav svg{width:24px;height:24px}
+
+/* common */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:36px}
+.topbar h1{margin:0;font-size:17px;font-weight:800;flex:1;text-align:center}
+.brand{display:flex;align-items:center;gap:6px;font-weight:800;font-size:20px;color:var(--primary)}
+.iconbtn{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--ink)}
+.iconbtn:hover{background:var(--surface2)}
+.iconbtn svg{width:22px;height:22px}
+.date{margin:-8px 0 0;font-weight:700;font-size:13px}
+.date small{font-weight:400;color:var(--muted);margin-left:6px}
+.search{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--line);border-radius:999px;padding:0 14px;height:42px}
+.search svg{width:18px;height:18px;color:var(--faint);flex:none}
+.search input{border:0;background:none;outline:none;flex:1;min-width:0;height:100%}
+.sec-title{margin:0;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:space-between}
+.sec-title small{font-weight:400;font-size:11px;color:var(--muted)}
+.panel{border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.panel-head{display:flex;align-items:center;gap:10px}
+.panel-head .badge{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:none}
+.panel-head .badge svg{width:18px;height:18px}
+.panel-head b{display:block;font-size:14px}
+.panel-head span{display:block;font-size:11px;color:var(--muted)}
+.trend{background:var(--trend-bg)}
+.rise{background:var(--rise-bg)}
+.rank{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.rank button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:7px 4px;border-radius:10px;font-weight:700}
+.rank button:hover{background:color-mix(in srgb,var(--surface) 60%,transparent)}
+.rank .n{width:18px;text-align:center;color:var(--primary);font-variant-numeric:tabular-nums}
+.rank .one{flex:1;min-width:0;font-weight:400;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:44px;border-radius:999px;font-weight:700;padding:0 20px}
+.btn-primary{background:linear-gradient(100deg,var(--primary),var(--violet));color:#fff}
+.btn-ghost{background:var(--surface);color:var(--primary);border:1.5px solid var(--primary)}
+.btn-sm{height:34px;font-size:12px;padding:0 14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:12px;font-weight:700}
+.chip:hover{border-color:var(--primary);color:var(--primary)}
+.genres{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.genre{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:10px;font-weight:700;color:var(--muted);padding:4px 0;border-radius:12px}
+.genre .gi{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff}
+.genre .gi svg{width:22px;height:22px}
+.genre[aria-pressed="true"] .gi{outline:3px solid color-mix(in srgb,var(--primary) 40%,transparent);outline-offset:2px}
+.genre[aria-pressed="true"]{color:var(--ink)}
+.pill{display:inline-block;font-size:10px;font-weight:700;padding:1px 8px;border-radius:999px;color:#fff;line-height:1.7;white-space:nowrap}
+.pill-soft{background:var(--surface2);color:var(--muted);border:1px solid var(--line)}
+
+/* list rows */
+.list{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px}
+.row:hover{border-color:color-mix(in srgb,var(--primary) 45%,var(--line))}
+.row .body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.row .ttl{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-weight:800;font-size:15px}
+.row .desc{font-size:12px;color:var(--muted)}
+.row .meta{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--faint)}
+.row .chev{color:var(--faint);align-self:center}
+.row .chev svg{width:18px;height:18px}
+.heat{display:inline-flex;gap:2px;align-items:center}
+.heat i{width:6px;height:10px;border-radius:2px;background:var(--line)}
+.heat i.on{background:var(--hot)}
+.flame{color:var(--hot);width:16px;height:16px}
+.fav{color:var(--hot);align-self:center;padding:6px;border-radius:50%}
+.fav svg{width:22px;height:22px}
+
+/* avatar mascot */
+.av{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center}
+.av svg{width:70%;height:70%}
+.av-lg{width:72px;height:72px}
+
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--surface2);border-radius:999px;padding:4px}
+.seg button{height:34px;border-radius:999px;font-weight:700;color:var(--muted);font-size:13px}
+.seg button[aria-selected="true"]{background:linear-gradient(100deg,var(--primary),var(--violet));color:#fff}
+
+.empty{text-align:center;color:var(--muted);padding:32px 8px;display:flex;flex-direction:column;align-items:center;gap:10px}
+
+/* detail */
+.overlay{position:absolute;inset:0;background:var(--surface);display:flex;flex-direction:column;z-index:5;animation:slide .22s ease-out}
+@keyframes slide{from{transform:translateX(24px);opacity:.4}to{transform:none;opacity:1}}
+.hero{display:flex;align-items:center;gap:14px}
+.hero h2{margin:0;font-size:24px;font-weight:800;line-height:1.2}
+.hero .yomi{font-size:12px;color:var(--muted)}
+.hero .pills{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.oneline{background:var(--trend-bg);border-radius:16px;padding:12px 16px}
+.oneline small{display:block;color:var(--primary);font-weight:700;font-size:11px}
+.oneline p{margin:4px 0 0;font-weight:700;font-size:15px}
+.block h3{margin:0 0 6px;font-size:15px;color:var(--primary)}
+.block p{margin:0;line-height:1.85}
+.ex{display:flex;flex-direction:column;gap:8px}
+.ex div{background:var(--surface2);border-radius:14px;padding:10px 14px;font-size:13px}
+.ex span{display:block;color:var(--muted);font-size:12px}
+.foot{border-top:1px solid var(--line);padding-top:12px;font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.foot a{color:var(--primary)}
+.ai-note{background:var(--hot-bg);color:var(--ink);border-radius:12px;padding:8px 12px;font-size:11px}
+
+/* quiz */
+.quizhead{background:linear-gradient(110deg,var(--primary),var(--violet));color:#fff;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.quizhead b{font-size:17px}
+.bar{height:8px;border-radius:99px;background:rgba(255,255,255,.3);overflow:hidden}
+.bar i{display:block;height:100%;background:#fff;border-radius:99px;transition:width .3s}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;font-weight:800;font-size:16px}
+.choices{display:flex;flex-direction:column;gap:10px}
+.choice{display:flex;align-items:center;gap:12px;text-align:left;border:1.5px solid var(--line);border-radius:16px;padding:10px 12px;background:var(--surface);font-weight:500;font-size:13px}
+.choice .k{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-weight:800;font-size:12px}
+.choice.correct{border-color:var(--good);background:var(--good-bg)}
+.choice.correct .k{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{border-color:var(--hot);background:var(--hot-bg)}
+.choice.wrong .k{background:var(--hot);border-color:var(--hot);color:#fff}
+.choice:disabled{cursor:default}
+.feedback{font-size:12px;color:var(--muted);background:var(--surface2);border-radius:12px;padding:10px 12px}
+.score{font-size:48px;font-weight:800;color:var(--primary);font-variant-numeric:tabular-nums;line-height:1}
+
+/* settings */
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 4px;border-bottom:1px solid var(--line);font-weight:700}
+.setrow label{display:flex;align-items:center;gap:10px}
+.setrow svg{width:20px;height:20px;color:var(--primary)}
+.switch{position:relative;width:48px;height:28px;flex:none}
+.switch input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.switch span{position:absolute;inset:0;border-radius:99px;background:var(--line);transition:background .2s;pointer-events:none}
+.switch span::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.switch input:checked+span{background:var(--primary)}
+.switch input:checked+span::after{transform:translateX(20px)}
+.switch input:focus-visible+span{outline:2px solid var(--primary);outline-offset:2px}
+select.sel{border:1px solid var(--line);background:var(--surface2);border-radius:10px;padding:6px 10px}
+.gchecks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gcheck{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;font-weight:700;font-size:12px;cursor:pointer}
+.gcheck:has(input:checked){border-color:var(--primary);background:var(--trend-bg)}
+.gcheck input{accent-color:var(--primary);width:18px;height:18px;margin:0 0 0 auto}
+.gcheck .dot{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#fff}
+.gcheck .dot svg{width:13px;height:13px}
+.note{font-size:11px;color:var(--muted);margin:0}
+
+/* 30-second card */
+.cardwrap{position:absolute;inset:0;z-index:8;background:linear-gradient(160deg,var(--primary),var(--violet));display:flex;flex-direction:column;padding:18px 16px calc(20px + env(safe-area-inset-bottom,0px));gap:14px;color:#fff;animation:fade .2s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.cardtop{display:flex;align-items:center;justify-content:space-between;font-weight:700}
+.cardtop .timer{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border-radius:99px;padding:4px 12px;font-variant-numeric:tabular-nums}
+.cardprog{height:4px;border-radius:99px;background:rgba(255,255,255,.3);overflow:hidden}
+.cardprog i{display:block;height:100%;background:#fff;transition:width 1s linear}
+.flash{flex:1;background:var(--surface);color:var(--ink);border-radius:28px;padding:22px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;overflow:auto}
+.flash h2{margin:0;font-size:28px;font-weight:800}
+.flash .yomi{color:var(--muted);font-size:12px;margin-top:-8px}
+.flash .def{color:var(--primary);font-weight:700;font-size:15px;margin:0}
+.flash .why{background:var(--trend-bg);border-radius:18px;padding:12px 14px;text-align:left;width:100%}
+.flash .why b{display:block;margin-bottom:4px}
+.flash .why p{margin:0;font-size:13px;color:var(--ink)}
+.cardbtns{display:flex;align-items:center;gap:12px}
+.cardbtns .btn{flex:1;background:#fff;color:var(--primary)}
+.cardbtns .skip{color:#fff;font-weight:700;padding:0 12px;height:44px}
+
+.toast{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:10px 18px;border-radius:99px;font-size:12px;font-weight:700;z-index:20;white-space:nowrap}
+.spinner{width:28px;height:28px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--primary);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <aside class="intro" aria-label="いまコトについて">
+    <p class="logo-big">いまコト</p>
+    <h2>今、話題の言葉を<br>わかりやすく。</h2>
+    <p>SNS・ネット・メディアで話題の「今の言葉」を、すぐに・やさしく・楽しく解説します。</p>
+    <ul class="points" id="points"></ul>
+  </aside>
+
+  <div class="device" id="device">
+    <main class="screen" id="screen" tabindex="-1"></main>
+    <nav class="nav" id="nav" aria-label="メインメニュー"></nav>
+  </div>
+</div>
+
+<script>
+/* ---------- icons ---------- */
+const I = {
+  home:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 2.5 11h2.5v9h5.5v-6h3v6H19v-9h2.5z"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>',
+  bookmark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
+  bookmarkF:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
+  bulb:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></svg>',
+  gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></svg>',
+  chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg>',
+  bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>',
+  flame:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 1-3.5S9 11 11 11c0-4 1-9 1-9zm0 20a7 7 0 0 0 7-7c0-3-1.5-5.5-2-6 0 0-.5 3-2.5 4 .5-3-2.5-7-2.5-7S8 9 6 12a7 7 0 0 0 6 10z"/></svg>',
+  up:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 6-6 4 4 8-8M15 7h6v6"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z"/></svg>',
+  heartO:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z"/></svg>',
+  bolt:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',
+  link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>',
+  cards:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="6" width="13" height="15" rx="3"/><path d="M8 3h9a3 3 0 0 1 3 3v11"/></svg>',
+  sparkle:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.3L20.5 10.5l-6.3 2.2L12 19l-2.2-6.3L3.5 10.5l6.3-2.2zM19 16l.9 2.1L22 19l-2.1.9L19 22l-.9-2.1L16 19l2.1-.9z"/></svg>',
+  // genre icons
+  sns:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-5 4V6a1 1 0 0 1 1-1z"/></svg>',
+  game:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 7h10a5 5 0 0 1 4.8 6.4l-1 3.4a2 2 0 0 1-3.4.8L15 15H9l-2.4 2.6a2 2 0 0 1-3.4-.8l-1-3.4A5 5 0 0 1 7 7zm0 3v1.5H5.5v1.5H7v1.5h1.5V13H10v-1.5H8.5V10zm9 .5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm2 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>',
+  music:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 3v12.5a3 3 0 1 1-2-2.8V7.3l-8 1.8v8.4a3 3 0 1 1-2-2.8V5z"/></svg>',
+  gourmet:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2v8a2 2 0 0 1-1 1.7V22h2V11.7A2 2 0 0 1 7 10V2h1v6h1V2h1v8a2 2 0 0 1-1 1.7V22H7zM16 2c2 0 3 2.5 3 6s-1 4-2 4.5V22h-2V2z"/></svg>',
+  news:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h13v14a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2zm3 3v3h7V7zm0 5v1.5h7V12zm0 3.5V17h7v-1.5zM18 8h2v10a1 1 0 0 1-2 0z"/></svg>',
+  ent:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>',
+  other:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2"/></svg>',
+};
+const mascot = (c='#3B7CF6') => `<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 5c7.2 0 12 5.6 12 13v14.5c0 1.3-1.5 2-2.5 1.2l-2.3-1.9-2.7 2.2a1.6 1.6 0 0 1-2 0L20 31.8 17.5 34a1.6 1.6 0 0 1-2 0l-2.7-2.2-2.3 1.9c-1 .8-2.5.1-2.5-1.2V18C8 10.6 12.8 5 20 5z" style="fill:${c}"/><ellipse cx="15.5" cy="18" rx="2" ry="2.6" fill="#fff"/><ellipse cx="24.5" cy="18" rx="2" ry="2.6" fill="#fff"/><circle cx="16" cy="18.6" r="1.1" fill="#1B2240"/><circle cx="25" cy="18.6" r="1.1" fill="#1B2240"/><path d="M17.5 24c1.5 1.4 3.5 1.4 5 0" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>`;
+
+const GENRES = {
+  sns:{name:'SNS',c:'var(--g-sns)',hex:'#3B7CF6'},
+  game:{name:'ゲーム/アニメ',c:'var(--g-game)',hex:'#1FAE78'},
+  music:{name:'音楽',c:'var(--g-music)',hex:'#E04FA8'},
+  gourmet:{name:'グルメ',c:'var(--g-gourmet)',hex:'#F08A1C'},
+  news:{name:'ニュース',c:'var(--g-news)',hex:'#0C9FC2'},
+  ent:{name:'エンタメ',c:'var(--g-ent)',hex:'#9A57EE'},
+  other:{name:'その他',c:'var(--g-other)',hex:'#6B7A99'},
+};
+
+/* ---------- data (updated 2026-09-26) ---------- */
+let UPDATED = '2026年9月26日';
+const S = {
+  wk:['若者の研究所（note）','https://note.com/weiden_haus_lab/n/n6fb2d3e8b2bc'],
+  tv:['Trivipedia 最新ネットスラング一覧2026','https://mittun-zakki.com/latest-net-slang/'],
+  or:['ORICON NEWS「JC・JK流行語大賞2026上半期」','https://www.oricon.co.jp/news/2464473/full/'],
+  wn:['ウイナレッジ 2026年Z世代の若者言葉','https://weknowledge.jp/column/trend/post_4292'],
+  os:['Oscar 2026年若者言葉の流行まとめ','https://oscar-formen.com/content/the-latest-trends-in-youth-slang-in-2026/'],
+};
+let WORDS = [
+  {id:'metsu',w:'〇〇すぎて滅',r:'〇〇すぎてめつ',g:'music',tags:['SNS','推し活'],t:98,heat:5,top:1,
+   one:'感情が振り切れて「消えちゃいそう」なほど心を動かされた状態。',
+   why:'M!LKの楽曲『好きすぎて滅！』がTikTokやXで広まり、「好きすぎて滅」「かわいすぎて滅」の形で使われるようになりました。「滅なんだけど」のように、しんどい出来事を大げさに言って笑いに変える使い方もあります。',
+   ex:[['「推しのビジュ良すぎて滅…」','（=好きすぎて心がもたない）'],['「テスト範囲広すぎて滅なんだけど」','（=もう終わってる、笑）']],
+   rel:['ギュン','ビジュイイじゃん','メロい'],src:[S.wk,S.tv]},
+  {id:'gyun',w:'ギュン',r:'ぎゅん',g:'sns',tags:['推し活','恋愛'],t:96,heat:5,top:2,
+   one:'「キュン」よりさらに強い、心臓をつかまれるようなときめき。',
+   why:'定番だった「キュンです」が少し古く感じられるようになり、濁音にして強さと新しさを出した言い方です。推しや好きな人への気持ちを、ちょっと面白がりながら伝えるときに使われます。',
+   ex:[['「今の笑顔、ギュンです」','（=キュンを超えてときめいた）'],['「新衣装ギュンすぎる」','（=かっこよすぎて胸が苦しい）']],
+   rel:['〇〇すぎて滅','メロい'],src:[S.wk,S.tv]},
+  {id:'mekureru',w:'めくれる',r:'めくれる',g:'news',tags:['SNS','暴露'],t:94,heat:4,top:3,
+   one:'隠していたことがバレる、化けの皮がはがれること。',
+   why:'もとは刑事や裏社会で使われていた隠語です。SNSでの暴露や過去の投稿の掘り起こしが日常的になったことで、一般のスラングとして広まりました。',
+   ex:[['「あのアカウント、裏垢めくれてた」','（=正体がバレていた）'],['「嘘ついてもすぐめくれるよ」','（=すぐにバレる）']],
+   rel:['フレネミー'],src:[S.wk,S.tv]},
+  {id:'frenemy',w:'フレネミー',r:'ふれねみー',g:'sns',tags:['人間関係','JC・JK流行語'],t:92,heat:4,top:4,
+   one:'表向きは友達のふりをしながら、裏では足を引っぱる相手。',
+   why:'英語のfriend（友達）とenemy（敵）を合わせた言葉です。「JC・JK流行語大賞2026上半期」に選ばれ、SNS時代の複雑な友達関係を表す言葉として中高生の間で使われています。',
+   ex:[['「あの子、正直フレネミーかも」','（=仲良さそうで実は敵っぽい）'],['「フレネミーにだけは相談しない」','（=裏で話を広められそう）']],
+   rel:['めくれる'],src:[S.or,S.tv]},
+  {id:'bondoro',w:'ボンドロ',r:'ぼんどろ',g:'gourmet',tags:['スイーツ','韓国'],t:90,heat:4,top:5,
+   one:'ドバイチョコの要素を取り入れた、韓国発の進化系スイーツ。',
+   why:'ピスタチオクリームとカダイフ（細い麺状の生地）のサクサク食感で人気になったドバイチョコの流れを受けて、韓国で生まれたスイーツです。2026年上半期の食トレンドとしてSNSで話題になりました。',
+   ex:[['「新大久保でボンドロ食べてきた」','（=話題の韓国スイーツ）'],['「ボンドロ、うま確すぎる」','（=絶対おいしいやつ）']],
+   rel:['うま確'],src:[S.tv]},
+  {id:'nyaon',w:'にゃおん',r:'にゃおん',g:'sns',tags:['気持ち','やさしい言い方'],t:89,heat:3,rise:1,
+   one:'がっかりした・期待はずれだった気持ちを、猫の鳴き声でやわらかく伝える言葉。',
+   why:'「最悪」とストレートに言うとトゲが立つので、かわいい語感に置きかえて空気を悪くしないようにする言い方です。「にゃおだね」の形でも使われ、対人トラブルを避けたい今の若者らしい表現として注目されています。',
+   ex:[['「雨で遠足中止…にゃおん」','（=残念、がっかり）'],['「それはにゃおだね」','（=それは残念だったね）']],
+   rel:['ギュン'],src:[S.os,S.wk]},
+  {id:'popparu',w:'ポパる',r:'ぽぱる',g:'sns',tags:['SNS','自己演出'],t:88,heat:3,rise:1,
+   one:'自分を実際より大きく見せる、盛った自己アピールをすること。',
+   why:'ほうれん草を食べて大きくなる「ポパイ」のイメージから生まれた言葉です。「イキる」ほど攻撃的ではなく、SNSでの見栄っ張りを少し冷めた目で笑うニュアンスがあります。',
+   ex:[['「プロフィールだいぶポパってるね」','（=盛ってるね）'],['「面接でポパりすぎた」','（=自分を大きく見せすぎた）']],
+   rel:['めくれる'],src:[S.wk]},
+  {id:'umakaku',w:'うま確',r:'うまかく',g:'gourmet',tags:['食べ物','略語'],t:87,heat:3,rise:1,
+   one:'「うまいこと確定」。見ただけで絶対おいしいとわかる、という意味。',
+   why:'料理や飲み物の写真・動画がSNSで大量に流れる中、「食べる前からおいしいのがわかる」気持ちを短く言える言葉として広まりました。',
+   ex:[['「この断面、うま確じゃん」','（=絶対おいしいやつ）'],['「チーズ追加はうま確」','（=失敗しない組み合わせ）']],
+   rel:['ボンドロ'],src:[S.os]},
+  {id:'outen',w:'横転',r:'おうてん',g:'sns',tags:['リアクション'],t:80,heat:4,
+   one:'想定外の展開に驚く・ずっこける・あきれること。',
+   why:'車が横倒しになる「横転」から転じて、予想外のできごとへのリアクションとして使われます。「〇〇すぎて横転」「大横転」のように強調して使われることも多いです。',
+   ex:[['「オチが意外すぎて横転」','（=びっくりしてずっこけた）'],['「寝坊して大横転」','（=盛大にやらかした）']],
+   rel:['〇〇すぎて滅'],src:[S.tv]},
+  {id:'mero',w:'メロい',r:'めろい',g:'ent',tags:['推し活'],t:78,heat:4,
+   one:'メロメロになるほど魅力的・かわいい・かっこいいこと。',
+   why:'推し活の中で「メロメロ」を形容詞にした言葉です。見た目だけでなく、しぐさや声など「刺さる」魅力全般に使われます。',
+   ex:[['「推しの低音ボイスがメロい」','（=たまらなく魅力的）'],['「その笑い方メロすぎ」','（=かわいすぎる）']],
+   rel:['ギュン','ビジュイイじゃん'],src:[S.tv]},
+  {id:'bijuii',w:'ビジュイイじゃん',r:'びじゅいいじゃん',g:'music',tags:['見た目','ほめ言葉'],t:76,heat:3,
+   one:'見た目や雰囲気が良いことをほめる言葉。',
+   why:'「ビジュ（ビジュアル）」と、M!LKの楽曲『イイじゃん』のフレーズが合わさって広まりました。友達の服装や髪型を軽くほめるときにも使えます。',
+   ex:[['「今日ビジュイイじゃん」','（=今日見た目が決まってるね）']],
+   rel:['〇〇すぎて滅','メロい'],src:[S.tv]},
+  {id:'dopagaki',w:'ドパガキ',r:'どぱがき',g:'news',tags:['ネット文化','自虐'],t:70,heat:3,
+   one:'ドーパミン中毒のガキ。短い刺激に慣れて集中力が続かない若者をからかう言葉。',
+   why:'2024年末ごろのX投稿から広まりました。ショート動画などの強い刺激に慣れた状態を表し、「ドパる」「ドパ舌（濃い味に慣れた舌）」などの派生語も生まれています。自虐として使われることも多い言葉です。',
+   ex:[['「動画1本も最後まで見られない、完全にドパガキ」','（=刺激に慣れすぎた自分への自虐）']],
+   rel:['アドガキ','ドパる'],src:[S.tv]},
+  {id:'ehho',w:'エッホエッホ',r:'えっほえっほ',g:'sns',tags:['ミーム','動物'],t:68,heat:3,
+   one:'大変な状況を、あえてかわいらしく表す擬音。',
+   why:'メンフクロウのヒナが走っているように見える写真がミームになり、「エッホエッホ」という掛け声と一緒に広まりました。忙しさや大変さをやわらかく伝えられます。',
+   ex:[['「残業エッホエッホがんばる」','（=大変だけど走り回ってがんばる）']],
+   rel:[],src:[S.tv]},
+  {id:'chappy',w:'チャッピー',r:'ちゃっぴー',g:'other',tags:['AI','愛称'],t:66,heat:3,
+   one:'対話AI「ChatGPT」の愛称。',
+   why:'「ChatGPT」を親しみやすく「〜ぴー」と呼んだ言い方です。AIに調べものや相談をするのが日常になり、友達のように呼ぶ人が増えました。',
+   ex:[['「わからないからチャッピーに聞いた」','（=ChatGPTに質問した）']],
+   rel:[],src:[S.tv]},
+  {id:'heisei',w:'平成女児',r:'へいせいじょじ',g:'other',tags:['レトロ','ファッション'],t:64,heat:3,
+   one:'1990年代後半〜2000年代前半に小中学生だった世代や、その頃の文化。',
+   why:'パステルカラーやキラキラ文具など、当時の「かわいい」をもう一度楽しむレトロブームとともに注目されました。',
+   ex:[['「このシール帳、平成女児すぎる」','（=あの頃のかわいさそのもの）']],
+   rel:['ぬい活'],src:[S.tv]},
+  {id:'nuikatsu',w:'ぬい活',r:'ぬいかつ',g:'ent',tags:['推し活'],t:62,heat:3,
+   one:'ぬいぐるみを持ち歩き、一緒に写真を撮ってSNSでシェアする活動。',
+   why:'推しを目に見える形で楽しむ方法として定着しました。人気キャラクター「ラブブ」などとセットで語られることも多いです。',
+   ex:[['「カフェでぬい活してきた」','（=ぬいぐるみと写真を撮ってきた）']],
+   rel:['平成女児','メロい'],src:[S.tv]},
+  {id:'tagosaku',w:'タゴサク構文',r:'たごさくこうぶん',g:'ent',tags:['映画','構文'],t:60,heat:2,
+   one:'「〜します。〜だからです」と言い切り、少し強引な理由をつける話し方。',
+   why:'映画『爆弾』で佐藤二朗さんが演じたキャラクターの口調がもとになり、SNSで自虐ネタのテンプレートとして使われています。',
+   ex:[['「今日は早く寝ます。明日の自分が泣くからです」','（=構文の例）']],
+   rel:[],src:[S.tv]},
+  {id:'mirishu',w:'未履修',r:'みりしゅう',g:'game',tags:['アニメ','推し活'],t:58,heat:2,
+   one:'アニメやアイドルなどを、まだ見ていない・まったく知らないこと。',
+   why:'大学の「単位を取っていない」という意味を、作品や推しの話題に当てはめた言い方です。「まだ知らない」を気軽に言えるので、話題に入りやすくなります。',
+   ex:[['「その作品、まだ未履修なんだよね」','（=まだ見てない）']],
+   rel:[],src:[S.os]},
+];
+let PAST = [];   // 話題が落ち着いた言葉（毎朝の更新で順位から外れたもの）
+let byW = {}, byId = {};
+function reindex(){
+  byW = Object.fromEntries([...PAST,...WORDS].map(x=>[x.w,x]));
+  byId = Object.fromEntries([...PAST,...WORDS].map(x=>[x.id,x]));
+}
+reindex();
+
+/* ---------- state ---------- */
+const store = {
+  get(k,d){ try{ const v=localStorage.getItem('imakoto.'+k); return v?JSON.parse(v):d; }catch{ return d; } },
+  set(k,v){ try{ localStorage.setItem('imakoto.'+k,JSON.stringify(v)); }catch{} },
+};
+const st = {
+  tab: store.get('tab','home'),
+  favs: store.get('favs',[]),         // [{id, at}]
+  hist: store.get('hist',[]),         // [{id, at}]
+  ai: store.get('ai',{}),             // id -> word object from Claude
+  seen: store.get('seen',{}),         // id -> 保存・閲覧した言葉の控え（一覧から外れても見返せるように）
+  prefs: store.get('prefs',{daily:true,time:'07:30',genres:['sns','game','music']}),
+  q:'', genre:null, tl:'new', sv:'fav', detail:null, quiz:null,
+};
+const $ = s => document.querySelector(s);
+const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const get = id => byId[id] || st.ai[id] || st.seen[id];
+const isFav = id => st.favs.some(f=>f.id===id);
+const fmtDate = d => { const x=new Date(d); return `${x.getFullYear()}/${String(x.getMonth()+1).padStart(2,'0')}/${String(x.getDate()).padStart(2,'0')}`; };
+const today = () => { const d=new Date(); return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）`; };
+
+function toast(msg){
+  const t=document.createElement('div'); t.className='toast'; t.textContent=msg; t.setAttribute('role','status');
+  $('#device').append(t); setTimeout(()=>t.remove(),1800);
+}
+function toggleFav(id){
+  if(isFav(id)) st.favs=st.favs.filter(f=>f.id!==id);
+  else { st.favs.unshift({id,at:Date.now()}); toast('保存しました'); }
+  store.set('favs',st.favs);
+}
+function remember(id){
+  const w=byId[id]; if(!w) return;
+  st.seen[id]=w; store.set('seen',st.seen);
+}
+function addHist(id){
+  remember(id);
+  st.hist=[{id,at:Date.now()},...st.hist.filter(h=>h.id!==id)].slice(0,50);
+  store.set('hist',st.hist);
+}
+
+/* ---------- pieces ---------- */
+const av = (w,lg) => `<span class="av${lg?' av-lg':''}" style="background:color-mix(in srgb,${GENRES[w.g]?.hex||'#3B7CF6'} 16%,var(--surface))">${mascot(GENRES[w.g]?.hex)}</span>`;
+const gpill = g => `<span class="pill" style="background:${GENRES[g]?.c||'var(--g-other)'}">${esc(GENRES[g]?.name||'その他')}</span>`;
+const heat = n => `<span class="heat" aria-label="注目度 ${n}/5">${[1,2,3,4,5].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</span>`;
+function row(w,{fav=false,date=null}={}){
+  return `<div class="row" role="button" tabindex="0" data-open="${esc(w.id)}">
+    ${av(w)}
+    <div class="body">
+      <div class="ttl">${esc(w.w)} ${w.heat>=5?`<span class="flame">${I.flame}</span>`:''} ${gpill(w.g)}</div>
+      <div class="desc">${esc(w.one)}</div>
+      <div class="meta">${date?`<span>${date}</span>`:`<span>注目度</span>${heat(w.heat||1)}`}${w.aiMade?'<span class="pill pill-soft">AI解説</span>':''}</div>
+    </div>
+    ${fav?`<button class="fav" data-fav="${esc(w.id)}" aria-label="お気に入りから外す">${I.heart}</button>`:`<span class="chev">${I.chev}</span>`}
+  </div>`;
+}
+
+/* ---------- screens ---------- */
+function home(){
+  const top = WORDS.filter(w=>w.top).sort((a,b)=>a.top-b.top);
+  const rise = WORDS.filter(w=>w.rise);
+  const xw = WORDS.filter(w=>(w.tags||[]).includes('Xトレンド')).sort((a,b)=>(b.heat||0)-(a.heat||0));
+  const q = st.q.trim();
+  let lower = '';
+  if(q){
+    const hit = WORDS.filter(w=>[w.w,w.r,w.one,...w.tags].join(' ').includes(q));
+    lower = `<h2 class="sec-title">「${esc(q)}」の検索結果 <small>${hit.length}件</small></h2>
+      <div class="list">${hit.map(w=>row(w)).join('')}</div>
+      ${AI_ENABLED?`<div class="panel" style="background:var(--surface2)">
+        <div class="panel-head"><span class="badge" style="background:var(--violet)">${I.sparkle}</span>
+          <div><b>${hit.length?'ほかの意味も知りたい？':'見つかりませんでした'}</b><span>AI（Claude）に「${esc(q)}」を解説してもらえます</span></div></div>
+        <button class="btn btn-primary btn-sm" data-ai="${esc(q)}">AIに解説してもらう</button>
+        <p class="note">AIの知識に基づく解説です。ごく最近の言葉は知らない場合があります。</p>
+      </div>`:(hit.length?'':`<div class="empty">${mascot('var(--faint)').replace('<svg','<svg width="56" height="56"')}<b>まだ登録されていない言葉です</b><span>毎朝の更新で追加されるかもしれません</span></div>`)}`;
+  } else if(st.genre){
+    const list = WORDS.filter(w=>w.g===st.genre);
+    lower = `<h2 class="sec-title">${esc(GENRES[st.genre].name)}の言葉 <small>${list.length}件</small></h2>
+      <div class="list">${list.length?list.map(w=>row(w)).join(''):'<div class="empty">このジャンルの言葉はまだありません</div>'}</div>`;
+  } else {
+    const mine = WORDS.filter(w=>st.prefs.genres.includes(w.g) && !w.top).slice(0,3);
+    if(mine.length) lower = `<h2 class="sec-title">あなたにおすすめ <small>興味のあるジャンルから</small></h2><div class="list">${mine.map(w=>row(w)).join('')}</div>`;
+  }
+  return `
+  <div class="topbar"><span class="brand">${mascot('var(--primary)').replace('<svg','<svg width="26" height="26"')}いまコト</span>
+    <button class="iconbtn" data-tab="settings" aria-label="通知設定">${I.bell}</button></div>
+  <p class="date">${today()}<small>情報更新：${UPDATED}</small></p>
+  <label class="search">${I.search}<input id="q" type="search" placeholder="気になる言葉を検索…" value="${esc(st.q)}" autocomplete="off" aria-label="言葉を検索"></label>
+  ${q?'':`
+  <section class="panel trend" aria-label="今日のトレンド">
+    <div class="panel-head"><span class="badge" style="background:#F2703A">${I.flame}</span><div><b>今日のトレンド</b><span>今、話題の5つの言葉</span></div></div>
+    <ol class="rank">${top.map((w,i)=>`<li><button data-open="${w.id}"><span class="n">${i+1}</span>${esc(w.w)}<span class="one">${esc(w.one)}</span></button></li>`).join('')}</ol>
+    <button class="btn btn-primary btn-sm" data-cards>${I.cards.replace('<svg','<svg width="16" height="16"')}30秒カードでまとめて見る</button>
+  </section>
+  <section class="panel rise" aria-label="急上昇している言葉">
+    <div class="panel-head"><span class="badge" style="background:var(--hot)">${I.up}</span><div><b>急上昇している言葉</b><span>みんなが調べている注目ワード</span></div></div>
+    <div class="chips">${rise.map(w=>`<button class="chip" data-open="${w.id}">${esc(w.w)}</button>`).join('')}</div>
+  </section>
+  ${xw.length?`<section class="panel" style="background:var(--surface2)" aria-label="Xで話題">
+    <div class="panel-head"><span class="badge" style="background:var(--ink);color:var(--surface);font-weight:800">X</span><div><b>Xで話題</b><span>Xのトレンドから、何が話題なのかを解説</span></div></div>
+    <div class="list">${xw.slice(0,5).map(w=>row(w)).join('')}</div>
+  </section>`:''}
+  <section style="display:flex;flex-direction:column;gap:10px">
+    <h2 class="sec-title">ジャンルから探す</h2>
+    <div class="genres">${['sns','game','music','gourmet','news','ent'].map(g=>`<button class="genre" data-genre="${g}" aria-pressed="${st.genre===g}"><span class="gi" style="background:${GENRES[g].c}">${I[g]}</span>${GENRES[g].name}</button>`).join('')}</div>
+  </section>`}
+  ${lower}`;
+}
+
+function timeline(){
+  const list=[...WORDS].sort((a,b)=> st.tl==='new' ? b.t-a.t : (b.heat-a.heat)||(b.t-a.t));
+  return `
+  <div class="topbar"><span style="width:36px"></span><h1>タイムライン</h1><span style="width:36px"></span></div>
+  <div class="seg" role="tablist">
+    <button role="tab" aria-selected="${st.tl==='new'}" data-tl="new">新着</button>
+    <button role="tab" aria-selected="${st.tl==='pop'}" data-tl="pop">人気</button>
+  </div>
+  <p class="note">${st.tl==='new'?'新しく話題になった順':'注目度（編集部の目安・5段階）が高い順'}に並んでいます。</p>
+  <div class="list">${list.map(w=>row(w)).join('')}</div>
+  ${PAST.length?`<h2 class="sec-title">少し前に話題だった言葉 <small>${PAST.length}件</small></h2><div class="list">${PAST.map(w=>row(w)).join('')}</div>`:''}`;
+}
+
+function saved(){
+  const src = st.sv==='fav'?st.favs:st.hist;
+  const items = src.map(x=>({w:get(x.id),at:x.at})).filter(x=>x.w);
+  return `
+  <div class="topbar"><span class="brand" style="font-size:17px;color:var(--ink)">${I.bookmarkF.replace('<svg','<svg width="22" height="22" style="color:var(--primary)"')}保存した単語</span><span></span></div>
+  <div class="seg" role="tablist">
+    <button role="tab" aria-selected="${st.sv==='fav'}" data-sv="fav">お気に入り</button>
+    <button role="tab" aria-selected="${st.sv==='hist'}" data-sv="hist">履歴</button>
+  </div>
+  ${items.length?`<div class="list">${items.map(x=>row(x.w,{fav:st.sv==='fav',date:fmtDate(x.at)})).join('')}</div>`
+  :`<div class="empty">${mascot('var(--faint)').replace('<svg','<svg width="56" height="56"')}<b>${st.sv==='fav'?'まだお気に入りはありません':'まだ見た言葉はありません'}</b><span>${st.sv==='fav'?'単語ページのしおりボタンで保存できます':'気になる言葉をタップしてみましょう'}</span><button class="btn btn-ghost btn-sm" data-tab="home">ホームで探す</button></div>`}`;
+}
+
+function newQuiz(){
+  const pool=[...WORDS].sort(()=>Math.random()-.5).slice(0,5);
+  return {i:0,score:0,picked:null,qs:pool.map(w=>{
+    const wrong=WORDS.filter(x=>x.id!==w.id).sort(()=>Math.random()-.5).slice(0,3).map(x=>x.one);
+    const opts=[...wrong,w.one].sort(()=>Math.random()-.5);
+    return {w,opts,ans:opts.indexOf(w.one)};
+  })};
+}
+function learn(){
+  if(!st.quiz) st.quiz=newQuiz();
+  const z=st.quiz, total=z.qs.length;
+  if(z.i>=total){
+    const msg = z.score===total?'パーフェクト！もう流行語マスターです。':z.score>=3?'いい調子！知らなかった言葉は保存して見直そう。':'知らないのは当たり前。カードで覚えてもう一度！';
+    return `<div class="quizhead"><b>学習モード</b><span>結果</span><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="empty" style="gap:14px"><span class="score">${z.score}<small style="font-size:20px"> / ${total}</small></span><b>${msg}</b>
+    <button class="btn btn-primary" data-quiz-reset>もう一度チャレンジ</button><button class="btn btn-ghost btn-sm" data-cards>30秒カードで復習</button></div>`;
+  }
+  const q=z.qs[z.i];
+  return `
+  <div class="quizhead"><div style="display:flex;align-items:center;gap:10px">${I.bulb.replace('<svg','<svg width="26" height="26"')}<b>学習モード</b></div>
+    <span style="font-variant-numeric:tabular-nums">${z.i+1} / ${total}問</span><div class="bar"><i style="width:${(z.i+(z.picked!==null?1:0))/total*100}%"></i></div></div>
+  <div class="q">「${esc(q.w.w)}」とは、<br>どんな意味でしょう？</div>
+  <div class="choices">${q.opts.map((o,i)=>{
+    let cls=''; if(z.picked!==null){ if(i===q.ans) cls='correct'; else if(i===z.picked) cls='wrong'; }
+    return `<button class="choice ${cls}" data-pick="${i}" ${z.picked!==null?'disabled':''}><span class="k">${'ABCD'[i]}</span>${esc(o)}</button>`;}).join('')}</div>
+  ${z.picked!==null?`<div class="feedback"><b style="color:${z.picked===q.ans?'var(--good)':'var(--hot)'}">${z.picked===q.ans?'正解！':'おしい！'}</b> ${esc(q.w.why.slice(0,70))}… <button style="color:var(--primary);font-weight:700" data-open="${q.w.id}">くわしく</button></div>
+  <button class="btn btn-primary" data-next>${z.i+1<total?'次の問題へ':'結果を見る'}</button>`:''}`;
+}
+
+function settings(){
+  const p=st.prefs;
+  const times=['06:30','07:00','07:30','08:00','12:00','18:00','21:00'];
+  return `
+  <div class="topbar"><button class="iconbtn" data-tab="home" aria-label="ホームに戻る">${I.back}</button><h1>通知設定</h1><span style="width:36px"></span></div>
+  <div>
+    <div class="setrow"><label for="daily">${I.bell}毎朝トレンド通知を受け取る</label><span class="switch"><input type="checkbox" id="daily" ${p.daily?'checked':''}><span></span></span></div>
+    <div class="setrow"><label for="time">通知時間</label><select class="sel" id="time">${times.map(t=>`<option ${t===p.time?'selected':''}>${t}</option>`).join('')}</select></div>
+  </div>
+  <h2 class="sec-title">興味のあるジャンル <small>複数選択可</small></h2>
+  <div class="gchecks">${Object.entries(GENRES).map(([k,g])=>`<label class="gcheck"><span class="dot" style="background:${g.c}">${I[k]}</span>${g.name}<input type="checkbox" name="g" value="${k}" ${p.genres.includes(k)?'checked':''}></label>`).join('')}</div>
+  <button class="btn btn-primary" data-save-prefs>設定を保存</button>
+  <p class="note">選んだジャンルはホームの「あなたにおすすめ」に反映されます。このWeb版では通知は届きません（通知時間の設定だけ保存されます）。</p>`;
+}
+
+function detail(w){
+  const fav=isFav(w.id);
+  return `<div class="overlay" role="dialog" aria-label="${esc(w.w)}の解説">
+  <div class="screen">
+    <div class="topbar"><button class="iconbtn" data-close aria-label="戻る">${I.back}</button><h1>単語</h1>
+      <button class="iconbtn" data-fav="${esc(w.id)}" aria-label="${fav?'お気に入りから外す':'お気に入りに保存'}" style="color:${fav?'var(--hot)':'var(--ink)'}">${fav?I.heart:I.heartO}</button></div>
+    <div class="hero">${av(w,true)}<div><h2>${esc(w.w)}</h2><div class="yomi">（${esc(w.r)}）</div>
+      <div class="pills">${gpill(w.g)}${(w.tags||[]).map(t=>`<span class="pill pill-soft">${esc(t)}</span>`).join('')}</div></div></div>
+    ${w.aiMade?'<div class="ai-note">この解説はAI（Claude）が作成しました。意味や使われ方が実際とちがう場合があります。</div>':''}
+    <div class="oneline"><small>ひとことで言うと</small><p>${esc(w.one)}</p></div>
+    <div class="block"><h3>なぜ今話題？</h3><p>${esc(w.why)}</p></div>
+    ${w.ex?.length?`<div class="block"><h3>使い方の例</h3><div class="ex">${w.ex.map(e=>`<div>${esc(e[0])}<span>${esc(e[1]||'')}</span></div>`).join('')}</div></div>`:''}
+    ${w.rel?.length?`<div class="block"><h3>関連ワード</h3><div class="chips">${w.rel.map(r=>byW[r]?`<button class="chip" data-open="${byW[r].id}">${esc(r)}</button>`:`<button class="chip" data-searchword="${esc(r)}">${esc(r)}</button>`).join('')}</div></div>`:''}
+    <button class="btn btn-ghost btn-sm" data-cards-one="${esc(w.id)}" style="align-self:flex-start">${I.cards.replace('<svg','<svg width="16" height="16"')}30秒カードで見る</button>
+    <div class="foot"><span>情報更新日：${w.aiMade?fmtDate(w.made):UPDATED}</span>
+      ${w.aiMade?'<span>出典：Claude（AI）による解説</span>':`<span>出典：${w.src.map(s=>`<a href="${s[1]}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join('、')}</span>`}</div>
+  </div></div>`;
+}
+
+/* ---------- 30-second cards ---------- */
+let cardTimer=null;
+function openCards(list){
+  closeCards();
+  const wrap=document.createElement('div'); wrap.className='cardwrap'; wrap.setAttribute('role','dialog'); wrap.setAttribute('aria-label','30秒でわかるカード');
+  $('#device').append(wrap);
+  let i=0, left=30;
+  const draw=()=>{
+    const w=list[i];
+    wrap.innerHTML=`<div class="cardtop"><span>${i+1} / ${list.length}</span><span class="timer">${I.clock.replace('<svg','<svg width="16" height="16"')}<span id="sec">${left}</span>秒</span></div>
+    <div class="cardprog"><i id="cprog" style="width:${(30-left)/30*100}%"></i></div>
+    <div class="flash">${av(w,true)}<h2>${esc(w.w)}</h2><div class="yomi">（${esc(w.r)}）</div><p class="def">${esc(w.one)}</p>
+      <div class="why"><b>なぜ流行ってるの？</b><p>${esc(w.why)}</p></div>
+      ${w.ex?.[0]?`<div class="why" style="background:var(--surface2)"><b>使い方</b><p>${esc(w.ex[0][0])} ${esc(w.ex[0][1]||'')}</p></div>`:''}</div>
+    <div class="cardbtns"><button class="btn" data-cnext>${i+1<list.length?'次へ':'おわり'}</button><button class="skip" data-cclose>閉じる</button></div>`;
+    addHist(w.id);
+  };
+  const tick=()=>{ left--; if(left<=0){ next(); return; } const s=wrap.querySelector('#sec'); if(s) s.textContent=left; const p=wrap.querySelector('#cprog'); if(p) p.style.width=((30-left)/30*100)+'%'; };
+  const next=()=>{ if(i+1<list.length){ i++; left=30; draw(); } else closeCards(); };
+  wrap.addEventListener('click',e=>{ if(e.target.closest('[data-cnext]')) next(); if(e.target.closest('[data-cclose]')) closeCards(); });
+  draw(); cardTimer=setInterval(tick,1000);
+}
+function closeCards(){ clearInterval(cardTimer); cardTimer=null; document.querySelector('.cardwrap')?.remove(); if(st.tab==='saved') render(); }
+
+/* ---------- AI lookup ---------- */
+// アプリ版ではAI解説はまだ使えない（Claude APIをつなぐときに true にする）
+const AI_ENABLED = false;
+let samplePromise = Promise.resolve(null);
+async function askAI(q){
+  const scr=$('#screen');
+  const box=document.createElement('div'); box.className='overlay';
+  box.innerHTML=`<div class="screen"><div class="topbar"><button class="iconbtn" data-close aria-label="戻る">${I.back}</button><h1>AI解説</h1><span style="width:36px"></span></div>
+    <div class="empty"><div class="spinner" aria-hidden="true"></div><b>「${esc(q)}」を調べています…</b><span>AIが考えています。10〜30秒ほどかかることがあります。</span></div></div>`;
+  $('#device').append(box);
+  const fail = msg => { box.querySelector('.empty').innerHTML=`${mascot('var(--faint)').replace('<svg','<svg width="56" height="56"')}<b>${msg}</b><button class="btn btn-ghost btn-sm" data-close>戻る</button>`; };
+  const sample = await samplePromise;
+  if(!sample){ fail('このページではAI解説が使えません（claude.ai上で開くと使えます）'); return; }
+  const prompt = `あなたは日本の流行語・ネットスラング・若者言葉をやさしく解説する編集者です。
+次の言葉を、中高生にもわかる日本語で解説してください。
+言葉：「${q.slice(0,60)}」
+
+ルール：
+- 意味を知らない、または確信がない場合は推測で作らず {"known": false} だけを返す
+- 実在の人物を傷つける内容や、差別的な使い方の例文は書かない
+- JSONだけを返す。形式：
+{"known": true, "word": "見出し語", "reading": "ひらがなの読み", "genre": "sns|game|music|gourmet|news|ent|other のどれか", "tags": ["短いタグ", "最大2つ"], "one": "ひとことで言うと（40字以内）", "why": "なぜ話題になったか・由来（120字以内）", "examples": [["「例文」", "（=言い換え）"], ["「例文」", "（=言い換え）"]], "related": ["関連する言葉", "最大3つ"]}`;
+  try{
+    const r = await sample.json(prompt);
+    if(!r || r.known===false || !r.one){ fail(`「${q}」はAIもよく知らない言葉でした`); return; }
+    const id='ai-'+Array.from(q).map(c=>c.codePointAt(0).toString(36)).join('');
+    const w={id,aiMade:true,made:Date.now(),w:String(r.word||q),r:String(r.reading||''),g:GENRES[r.genre]?r.genre:'other',
+      tags:(Array.isArray(r.tags)?r.tags:[]).slice(0,2).map(String),heat:1,one:String(r.one),why:String(r.why||''),
+      ex:(Array.isArray(r.examples)?r.examples:[]).slice(0,3).map(e=>Array.isArray(e)?[String(e[0]||''),String(e[1]||'')]:[String(e),'']),
+      rel:(Array.isArray(r.related)?r.related:[]).slice(0,3).map(String)};
+    st.ai[id]=w; store.set('ai',st.ai); addHist(id);
+    box.remove(); openDetail(id,false);
+  }catch(e){
+    const m={not_granted:'AIの利用が許可されませんでした',sampling_disabled:'このアカウントではAIが使えません',rate_limited:'混み合っています。少し待ってからもう一度お試しください',invalid_json:'うまく解説を作れませんでした。もう一度お試しください',refused:'この言葉は解説できませんでした'};
+    fail(m[e?.code]||'通信に失敗しました。もう一度お試しください');
+  }
+}
+
+/* ---------- render & events ---------- */
+const TABS=[['home','ホーム',I.home],['timeline','タイムライン',I.clock],['saved','保存',I.bookmark],['learn','学習',I.bulb],['settings','設定',I.gear]];
+function render(keepScroll){
+  const scr=$('#screen'); const y=scr.scrollTop;
+  scr.innerHTML = ({home,timeline,saved,learn,settings})[st.tab]();
+  $('#nav').innerHTML = TABS.map(([k,l,ic])=>`<button data-tab="${k}" ${st.tab===k?'aria-current="page"':''}>${k==='saved'&&st.tab==='saved'?I.bookmarkF:ic}${l}</button>`).join('');
+  if(keepScroll) scr.scrollTop=y;
+  const q=$('#q');
+  if(q){
+    // 日本語入力（IME変換中）は再描画しない
+    const update=()=>{ st.q=q.value; const pos=q.selectionStart; render(); const n=$('#q'); n.focus(); try{n.setSelectionRange(pos,pos);}catch{} };
+    q.addEventListener('input',ev=>{ if(ev.isComposing) return; update(); });
+    q.addEventListener('compositionend',update);
+  }
+}
+function openDetail(id,push=true){
+  const w=get(id); if(!w) return;
+  document.querySelector('.overlay')?.remove();
+  addHist(id);
+  const tmp=document.createElement('div'); tmp.innerHTML=detail(w);
+  $('#device').append(tmp.firstElementChild);
+  st.detail=id;
+}
+function closeDetail(){ document.querySelectorAll('.overlay').forEach(o=>o.remove()); st.detail=null; render(true); }
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-tab],[data-open],[data-fav],[data-close],[data-genre],[data-tl],[data-sv],[data-pick],[data-next],[data-quiz-reset],[data-save-prefs],[data-cards],[data-cards-one],[data-ai],[data-searchword]');
+  if(!t) return;
+  const d=t.dataset;
+  if(d.fav!==undefined){ e.stopPropagation(); toggleFav(d.fav);
+    const ov=document.querySelector('.overlay'); if(ov && st.detail===d.fav){ ov.remove(); const tmp=document.createElement('div'); tmp.innerHTML=detail(get(d.fav)); tmp.firstElementChild.style.animation='none'; $('#device').append(tmp.firstElementChild); }
+    else render(true); return; }
+  if(d.open) return openDetail(d.open);
+  if(d.close!==undefined) return closeDetail();
+  if(d.tab){ closeDetail(); st.tab=d.tab; store.set('tab',st.tab); render(); $('#screen').scrollTop=0; return; }
+  if(d.genre){ st.genre = st.genre===d.genre?null:d.genre; render(true); return; }
+  if(d.tl){ st.tl=d.tl; render(); return; }
+  if(d.sv){ st.sv=d.sv; render(); return; }
+  if(d.pick!==undefined){ const z=st.quiz; if(z.picked!==null) return; z.picked=+d.pick; if(z.picked===z.qs[z.i].ans) z.score++; render(true); return; }
+  if(d.next!==undefined){ st.quiz.i++; st.quiz.picked=null; render(); return; }
+  if(d.quizReset!==undefined){ st.quiz=newQuiz(); render(); return; }
+  if(d.savePrefs!==undefined){
+    st.prefs={daily:$('#daily').checked,time:$('#time').value,genres:[...document.querySelectorAll('input[name="g"]:checked')].map(x=>x.value)};
+    store.set('prefs',st.prefs); toast('設定を保存しました'); return; }
+  if(d.cards!==undefined) return openCards(WORDS.filter(w=>w.top).sort((a,b)=>a.top-b.top));
+  if(d.cardsOne) return openCards([get(d.cardsOne)]);
+  if(d.ai) return askAI(d.ai);
+  if(d.searchword){ closeDetail(); st.tab='home'; st.q=d.searchword; render(); return; }
+});
+document.addEventListener('keydown',e=>{
+  if((e.key==='Enter'||e.key===' ') && e.target.matches('.row[role="button"]')){ e.preventDefault(); openDetail(e.target.dataset.open); }
+  if(e.key==='Escape'){ if(document.querySelector('.cardwrap')) closeCards(); else if(document.querySelector('.overlay')) closeDetail(); }
+});
+
+/* intro points */
+$('#points').innerHTML=[
+  ['var(--primary)',I.bolt,'30秒で意味がわかる','カンタンに読めて、すぐ理解できるカード形式'],
+  ['var(--good)',I.bulb,'なぜ流行っているかまでわかる','背景・理由・使われ方をやさしく解説'],
+  ['var(--violet)',I.link,'情報源と更新日が見える','出典リンクつきで確かめられる'],
+  ['var(--hot)',I.heart,'知らない言葉を責めない','わからないのは当たり前。気軽に調べてOK'],
+  ['#5B5BD6',I.clock,'流行が終わった言葉も履歴で確認','見た言葉はいつでも見返せる'],
+].map(([c,ic,b,s])=>`<li><span class="pi" style="background:${c}">${ic.replace('<svg','<svg width="18" height="18"')}</span><div><b>${b}</b><span>${s}</span></div></li>`).join('');
+
+/* ---------- 毎朝の自動更新データを読み込む ---------- */
+function applyTrends(d){
+  if(!d || !Array.isArray(d.words) || !d.words.length) return;
+  WORDS = d.words.filter(w=>w && w.id && w.w && w.one);
+  PAST = Array.isArray(d.past) ? d.past.filter(w=>w && w.id && w.w && w.one) : [];
+  if(d.updatedLabel) UPDATED = String(d.updatedLabel);
+  reindex();
+  if(!st.quiz || st.quiz.i===0 && st.quiz.picked===null) st.quiz=null;
+  if(!document.querySelector('.overlay') && !document.activeElement?.matches('#q')) render(true);
+}
+(async()=>{
+  try{
+    const res = await fetch('data/trends.json?t='+Date.now(), {cache:'no-store'});
+    if(res.ok) applyTrends(await res.json());
+  }catch{}   // オフラインのときは前回のデータ（またはページ内のデータ）で表示
+})();
+if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+
+render();
+</script>
+</body>
+</html>

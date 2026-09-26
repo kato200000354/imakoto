@@ -1,0 +1,17 @@
+{
+  "name": "いまコト",
+  "short_name": "いまコト",
+  "description": "今、話題の言葉を、意味・流行の理由・使い方の例つきでやさしく解説するアプリ。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#E9EFFD",
+  "theme_color": "#3565F2",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
