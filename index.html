@@ -575,7 +575,8 @@ function settings(){
   <h2 class="sec-title">興味のあるジャンル <small>複数選択可</small></h2>
   <div class="gchecks">${Object.entries(GENRES).map(([k,g])=>`<label class="gcheck"><span class="dot" style="background:${g.c}">${I[k]}</span>${g.name}<input type="checkbox" name="g" value="${k}" ${p.genres.includes(k)?'checked':''}></label>`).join('')}</div>
   <button class="btn btn-primary" data-save-prefs>設定を保存</button>
-  <p class="note">選んだジャンルはホームの「あなたにおすすめ」に反映されます。このWeb版では通知は届きません（通知時間の設定だけ保存されます）。</p>`;
+  <p class="note">選んだジャンルはホームの「あなたにおすすめ」に反映されます。このWeb版では通知は届きません（通知時間の設定だけ保存されます）。</p>
+  <p class="note"><a href="privacy.html" style="color:var(--primary)">プライバシーポリシー</a> ・ <a href="https://github.com/kato200000354/imakoto/issues" target="_blank" rel="noopener" style="color:var(--primary)">お問い合わせ</a></p>`;
 }
 
 function detail(w){
