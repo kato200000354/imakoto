@@ -714,6 +714,24 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){ if(document.querySelector('.cardwrap')) closeCards(); else if(document.querySelector('.overlay')) closeDetail(); }
 });
 
+/* ---------- 端末の戻るボタン ---------- */
+// 戻るボタンでアプリが閉じないよう、履歴に「見張り」を1つ置いておき、押されたらアプリの中で1つ前に戻る。
+// いちばん最初の画面（ホームで何も開いていない）では、2回続けて押したときだけ閉じる
+let exitArmed=false, exitTimer=0;
+// 埋め込み表示（iframe）のときは、外のページの履歴をいじらないよう何もしない
+const ownWindow=(()=>{ try{ return window.top===window; }catch{ return false; } })();
+if(ownWindow){ try{ history.replaceState({imk:'base'},''); history.pushState({imk:'guard'},''); }catch{} }
+addEventListener('popstate',()=>{
+  if(!ownWindow) return;
+  if(document.querySelector('.cardwrap')) closeCards();
+  else if(document.querySelector('.overlay')) closeDetail();
+  else if(st.tab!=='home'){ st.tab='home'; store.set('tab',st.tab); render(); $('#screen').scrollTop=0; }
+  else if(st.q){ st.q=''; render(); }
+  else if(exitArmed){ history.back(); return; }
+  else{ exitArmed=true; toast('もう一度押すと閉じます'); clearTimeout(exitTimer); exitTimer=setTimeout(()=>{ exitArmed=false; },2000); }
+  try{ history.pushState({imk:'guard'},''); }catch{}
+});
+
 /* intro points */
 $('#points').innerHTML=[
   ['var(--primary)',I.bolt,'30秒で意味がわかる','カンタンに読めて、すぐ理解できるカード形式'],
